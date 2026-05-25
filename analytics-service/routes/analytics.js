@@ -21,11 +21,7 @@ router.post('/play', async (req, res) => {
 router.get('/tracks/popular', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 10;
-    const { data, error } = await supabase
-      .from('plays')
-      .select('track_id, count, tracks:track_id(title, artists!inner(name), cover_url)')
-      .order('count', { ascending: false })
-      .limit(limit);
+    const { data, error } = await supabase.rpc('get_popular_tracks', { limit_param: limit });
     if (error) throw error;
     res.json(data || []);
   } catch (err) {
