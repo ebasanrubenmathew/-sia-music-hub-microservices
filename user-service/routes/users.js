@@ -2,6 +2,20 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../db');
 
+function formatDate(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return d.toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+}
+
+function formatUser(u) {
+  if (!u) return u;
+  return { ...u, created_at: formatDate(u.created_at) };
+}
+
 router.post('/register', async (req, res) => {
   try {
     const { email, password, username, role } = req.body;
@@ -35,7 +49,7 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      user: newProfile,
+      user: formatUser(newProfile),
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -70,7 +84,7 @@ router.post('/login', async (req, res) => {
         access_token: authData.session.access_token,
         expires_at: authData.session.expires_at,
       },
-      user: profile,
+      user: formatUser(profile),
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -85,7 +99,7 @@ router.get('/', async (req, res) => {
       .order('created_at', { ascending: false });
 
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
+    res.json((data || []).map(formatUser));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -101,7 +115,7 @@ router.get('/:id', async (req, res) => {
       .single();
 
     if (error) return res.status(404).json({ error: 'User not found' });
-    res.json(data);
+    res.json(formatUser(data));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -129,7 +143,7 @@ router.put('/:id', async (req, res) => {
       .single();
 
     if (error) return res.status(500).json({ error: error.message });
-    res.json({ success: true, user: data });
+    res.json({ success: true, user: formatUser(data) });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
