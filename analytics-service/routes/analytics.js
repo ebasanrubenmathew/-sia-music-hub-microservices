@@ -44,7 +44,18 @@ router.get('/tracks/:id/stats', async (req, res) => {
       .select('user_id', { count: 'exact', head: true })
       .eq('track_id', id)
       .not('user_id', 'is', null);
-    res.json({ track_id: parseInt(id), plays: count || 0, unique_listeners: unique || 0 });
+    const { data: lastPlayed } = await supabase
+      .from('plays')
+      .select('played_at')
+      .eq('track_id', id)
+      .order('played_at', { ascending: false })
+      .limit(1);
+    res.json({
+      track_id: parseInt(id),
+      total_plays: count || 0,
+      unique_listeners: unique || 0,
+      last_played: lastPlayed?.[0]?.played_at || null
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
