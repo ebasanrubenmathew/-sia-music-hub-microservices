@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db');
-const auth = require('../auth');
-
-router.use(auth);
 
 router.get('/:userId', async (req, res) => {
   try {
