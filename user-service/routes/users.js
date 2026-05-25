@@ -18,20 +18,24 @@ router.post('/register', async (req, res) => {
 
     const userId = authData.user.id;
     const displayName = (username && username.trim()) || email.split('@')[0];
-    const userRole = (role && role.trim()) || 'listener';
 
     const { error: profileError } = await supabase.from('profiles').upsert({
       id: userId,
       email,
       username: displayName,
-      role: userRole,
     });
 
     if (profileError) return res.status(500).json({ error: profileError.message });
 
+    const { data: newProfile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
     res.status(201).json({
       success: true,
-      user: { id: userId, email, username: displayName, role: userRole },
+      user: newProfile,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
