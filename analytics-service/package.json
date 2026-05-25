@@ -1,0 +1,17 @@
+{
+  "name": "music-hub-analytics",
+  "version": "1.0.0",
+  "description": "Analytics microservice for Music Hub - tracks plays and stats",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
