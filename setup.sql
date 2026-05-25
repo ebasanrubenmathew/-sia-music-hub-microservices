@@ -2,7 +2,7 @@
 create table if not exists public.plays (
   id bigint generated always as identity primary key,
   track_id bigint references public.tracks(id) on delete cascade,
-  user_id uuid references public.profiles(id) on delete set null,
+  user_id text,
   played_at timestamptz default now()
 );
 

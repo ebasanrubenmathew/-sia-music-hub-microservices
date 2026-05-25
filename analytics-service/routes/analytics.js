@@ -6,13 +6,15 @@ router.post('/play', async (req, res) => {
   try {
     const { track_id, user_id } = req.body;
     if (!track_id) return res.status(400).json({ error: 'track_id is required' });
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const validUserId = user_id && uuidRegex.test(user_id) ? user_id : null;
     const { error } = await supabase.from('plays').insert({
       track_id,
-      user_id: user_id || null,
+      user_id: validUserId,
       played_at: new Date().toISOString(),
     });
     if (error) throw error;
-    res.json({ success: true });
+    res.json({ success: true, note: validUserId ? null : 'user_id was empty or invalid UUID, logged without user' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
