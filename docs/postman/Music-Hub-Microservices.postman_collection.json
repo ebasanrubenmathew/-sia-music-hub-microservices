@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "Music Hub Microservices API",
+    "description": "Complete API collection for Music Hub Analytics and Recommendation microservices.\\n\\n## Base URLs\\n- Analytics: https://sia-music-hub-analytics.onrender.com\\n- Recommendations: https://music-hub-recommendations.onrender.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Analytics Service",
+      "description": "Endpoints for tracking plays, popular tracks, and statistics.",
+      "item": [
+        {
+          "name": "Check Server Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://sia-music-hub-analytics.onrender.com/",
+              "protocol": "https",
+              "host": ["sia-music-hub-analytics", "onrender", "com"],
+              "path": [""]
+            },
+            "description": "Check if the analytics service is running."
+          }
+        },
+        {
+          "name": "Log Play Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"track_id\": 1,\n  \"user_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}"
+            },
+            "url": {
+              "raw": "https://sia-music-hub-analytics.onrender.com/api/analytics/play",
+              "protocol": "https",
+              "host": ["sia-music-hub-analytics", "onrender", "com"],
+              "path": ["api", "analytics", "play"]
+            },
+            "description": "Record a play event when a user listens to a track."
+          }
+        },
+        {
+          "name": "Get Popular Tracks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://sia-music-hub-analytics.onrender.com/api/analytics/tracks/popular?limit=5",
+              "protocol": "https",
+              "host": ["sia-music-hub-analytics", "onrender", "com"],
+              "path": ["api", "analytics", "tracks", "popular"],
+              "query": [
+                { "key": "limit", "value": "5", "description": "Number of tracks to return" }
+              ]
+            },
+            "description": "Get the most played tracks."
+          }
+        },
+        {
+          "name": "Get Track Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://sia-music-hub-analytics.onrender.com/api/analytics/tracks/1/stats",
+              "protocol": "https",
+              "host": ["sia-music-hub-analytics", "onrender", "com"],
+              "path": ["api", "analytics", "tracks", "1", "stats"]
+            },
+            "description": "Get play count and unique listeners for a specific track."
+          }
+        },
+        {
+          "name": "Get User Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://sia-music-hub-analytics.onrender.com/api/analytics/users/550e8400-e29b-41d4-a716-446655440000/stats",
+              "protocol": "https",
+              "host": ["sia-music-hub-analytics", "onrender", "com"],
+              "path": ["api", "analytics", "users", "550e8400-e29b-41d4-a716-446655440000", "stats"]
+            },
+            "description": "Get listening statistics and recent tracks for a specific user."
+          }
+        },
+        {
+          "name": "Get Dashboard Overview",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://sia-music-hub-analytics.onrender.com/api/analytics/overview",
+              "protocol": "https",
+              "host": ["sia-music-hub-analytics", "onrender", "com"],
+              "path": ["api", "analytics", "overview"]
+            },
+            "description": "Get overall platform analytics: total plays, unique listeners, most played track."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recommendation Service",
+      "description": "Endpoints for personalized track recommendations.",
+      "item": [
+        {
+          "name": "Check Server Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://music-hub-recommendations.onrender.com/",
+              "protocol": "https",
+              "host": ["music-hub-recommendations", "onrender", "com"],
+              "path": [""]
+            },
+            "description": "Check if the recommendation service is running."
+          }
+        },
+        {
+          "name": "Get User Recommendations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://music-hub-recommendations.onrender.com/api/recommendations/550e8400-e29b-41d4-a716-446655440000?limit=6",
+              "protocol": "https",
+              "host": ["music-hub-recommendations", "onrender", "com"],
+              "path": ["api", "recommendations", "550e8400-e29b-41d4-a716-446655440000"],
+              "query": [
+                { "key": "limit", "value": "6", "description": "Number of recommendations" }
+              ]
+            },
+            "description": "Get personalized track recommendations based on user's favorites."
+          }
+        },
+        {
+          "name": "Get Similar Tracks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "https://music-hub-recommendations.onrender.com/api/recommendations/track/1?limit=5",
+              "protocol": "https",
+              "host": ["music-hub-recommendations", "onrender", "com"],
+              "path": ["api", "recommendations", "track", "1"],
+              "query": [
+                { "key": "limit", "value": "5", "description": "Number of similar tracks" }
+              ]
+            },
+            "description": "Find tracks similar to a given track by genre or artist."
+          }
+        }
+      ]
+    }
+  ]
+}
